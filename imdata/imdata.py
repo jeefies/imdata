@@ -1,5 +1,7 @@
 import codecs # use codecs to encode or decode a string or a bytes
 import base64 # turn all bytes into ascii codes
+import zlib # compress the bytes in
+import math # for auto choosing the size
 
 import numpy as np # the array for the im
 import imageio # to save the image
@@ -42,7 +44,7 @@ class ImData:
 
     def bytes_pix(self, bs, size = (400, 600), encode='utf-8'):
         "turn bytes into pixel info"
-        base = base64.b85encode(self.to_bytes(bs, encode)) # change to base85 string, only use ascii letters
+        base = base64.b85encode(zlib.compress(self.to_bytes(bs, encode))) # change to base85 string, only use ascii letters
         size = (*size, 3) # get the im size
         length = self._size(size) # get max data length
         if len(base) > length:
@@ -62,10 +64,19 @@ class ImData:
             res *= cls._size(i)
         return res
 
-    def pix_bytes(self, pix, encode='utf-8'):
+    def pix_bytes(self, pix):
         row = pix.reshape(-1)
         stri = ''.join(chr(code) for code in row[:] if code)
-        return base64.b85decode(self.to_bytes(stri, encode))
-
+        return base64.b85decode(zlib.decompress(self.to_bytes(stri)))
+    
+    @staticmethod
+    def _autosize(length):
+        if not isinstance(length, int):
+            length = len(length)
+        length = math.ceil(length / 3)
+        # img size as 16：9
+        m = length // (16 * 9)
+        cell = math.ceil(math.sqrt(m))
+        size = (cell * 16, cell * 9, 3)
 
 class SizeError(Exception): pass
