@@ -71,12 +71,12 @@ class ImData:
     
     @staticmethod
     def _autosize(length):
-        if not isinstance(length, int):
-            length = len(length)
-        length = math.ceil(length / 3)
+        a, b = 3, 4
+        length = (length / 3)
         # img size as 16：9
-        m = length // (16 * 9)
-        cell = math.ceil(math.sqrt(m))
+        m = length // (a * b)
+        cell = math.sqrt(m)
         size = (cell * 16, cell * 9, 3)
+        return tuple(math.ceil(i) for i in size)
 
 class SizeError(Exception): pass
