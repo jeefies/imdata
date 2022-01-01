@@ -1,2 +1,10 @@
-/*/__pycache__
-/*/*/__pycache__
+__pycache__
+
+*.bmp
+*.jpg
+*.png
+*.jpeg
+*.swp
+*.swo
+
+build
