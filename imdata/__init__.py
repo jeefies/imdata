@@ -8,7 +8,7 @@ import imageio # to save the image
 
 
 class ImData:
-    "A class to save the string data by img, can format in tiff, tif, png type."
+    "A class to save the string data by img, can format in tiff, tif, png, bmp."
 
     content = None
     imdata = None
@@ -160,16 +160,23 @@ class ImData:
         for i in range(4):
             length |= row[1 + i] << (i * 8)
 
+        # imtype:
+        # 0 for base and zlib
+        # 1 for plain matrix
+        # 2 for zlib + matrix
         if imtype == 1:
             # 数组就直接返回
             return row[5 : length + 5]
         elif imtype == 2:
             ctx = zlib.decompress(bytes(row[5 : length + 5]))
             return np.array(ctx, dtype="uint8")
-        else:
+        elif imtype == 0:
             # 字符串拼接只后会返回bytes
             stri = bytes(row[5 : length + 5])
             return zlib.decompress(base64.b85decode(stri))
+        else:
+            # error
+            pass
     
     @staticmethod
     def _autosize(length, w = 4, h = 3):

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "imdata"
+version = "0.0.4"
+authors = [
+  { name="Jeefy", email="jeefy163@163.com" },
+]
+description = "A easy class for save the data in an image"
+readme = "README.md"
+# license = { file="LICENSE" }
+requires-python = ">=3.5"
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = ['numpy', 'imageio']
+
+[project.urls]
+"Homepage" = "https://github.com/jeefies/imdata"
+"Bug Tracker" = "https://github.com/jeefies/imdata/issues"
